@@ -194,7 +194,7 @@ namespace laba1
 
         static double memory_used = 0;
         List<App> apps = new List<App>();
-        public Smartphone(string manafacturer1, string model1, int cpufreq, int cpucore, int ram, string typeofram, int memory1, string os1, string imei1)
+        public Smartphone(string manafacturer1, string model1, double cpufreq, int cpucore, int ram, string typeofram, int memory1, string os1, string imei1)
         {
             manufacturer = manafacturer1;
             model = model1;
@@ -211,15 +211,7 @@ namespace laba1
         {
             apps.Clear();
         }
-        public double averageApp()
-        {
-            double k = memory;
-            foreach (var app in apps)
-            {
-                k -= app.memory2;
-            }
-            return k * 2;
-        }
+       
         public void print()
         {
             int i = 1;
@@ -238,18 +230,16 @@ namespace laba1
                 foreach (var app in apps)
                 {
                     Console.Write($"{i}. ");
-                    Console.WriteLine($"Название: {0}, занимаемая память: {1} Гб", app.name, app.memory2);
+                    Console.WriteLine("Название:{0} , занимаемая память: {1} Гб", app.name, app.memory2);
                     i++;
                 }
 
             }
+            Console.WriteLine("===========================================================================");
         }
         public void InstallApp(string name, double memory2)
         {
-            /*foreach (App app in apps)
-            {
-                App.Print();
-            }*/
+            
             foreach (App app in apps)
             {
 
@@ -260,17 +250,13 @@ namespace laba1
                     Console.WriteLine("Приложение с таким названием уже существует. Установка отменена.");
                     return;
                 }
-                //Console.WriteLine(memory_used);
-                Console.WriteLine(memory2);
+                
             }
 
-            if (memory_used + memory2 > memory) // есть подозрения в этой фун
+            if (memory_used + memory2 > memory) 
             {
                 Console.WriteLine("На устройстве недостаточно места. Установка отменена.");
-                /*double checkaddition = 0;
-                checkaddition = memory_used + memory2;
-                Console.WriteLine("CHECKADDITION {0}", checkaddition);*/
-                //Console.WriteLine(memory2);
+     
                 return;
             }
 
@@ -281,23 +267,31 @@ namespace laba1
             }
             catch (Exception)
             {
-                throw (new Exception("Установка отменена."));
+                throw (new Exception("Установка отменена.")); 
             }
             
         }
         public void DeleteApp(string name)
         {
-            int i = 1;
-            foreach (App app in apps)
+            int index = -1;
+            for (int i = 0; i < apps.Count; i++)
             {
-                if (app.name == name)
+                if (apps[i].name == name)
                 {
-                    apps.RemoveAt(i);
-                    i++;
+                    index = i;
+                    break;
                 }
-                else { i++; }
             }
-            Console.WriteLine("Приложение с таким названием не существует. Удаление не произошло.");
+
+            if (index != -1)
+            {
+                apps.RemoveAt(index);
+                Console.WriteLine("Приложение с названием " + name + " удалено.");
+            }
+            else
+            {
+                Console.WriteLine("Приложение с названием " + name + " не существует. Удаление не произошло.");
+            }
         }
 
     }
@@ -311,18 +305,18 @@ namespace laba1
         static void Main()
         {
 
-            Smartphone s1 = new Smartphone("Apple", "SE", 2000, 8, 6, "LPDDR3", 256, "IOS", "346741084731834");
+            Smartphone s1 = new Smartphone("Apple", "SE", 1.7, 8, 6, "LPDDR3", 128, "IOS", "346741084731834");
             s1.print();
+           
             s1.InstallApp("VK", 2);
-            //s1.InstallApp("VK", 15);
-            //s1.InstallApp("", 15);
-            //s1.InstallApp("Game", -10);
+            s1.InstallApp("VK", 15);
             s1.InstallApp("YouTube", 8);
             s1.InstallApp("YourNETI", 10);
-            s1.InstallApp("Word", 99);
+            s1.InstallApp("Word", 9);
+            s1.print();
             s1.DeleteApp("Word");
-           // Console.WriteLine(s1.averageApp());
-           // s1.HardReset();
+            s1.print();
+            s1.HardReset();
             s1.print();
             
         }
